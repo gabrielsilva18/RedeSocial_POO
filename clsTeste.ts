@@ -1,5 +1,5 @@
 // Importe as classes do seu código
-import { Perfil, Postagem, PostagemAvancada, RepositorioDePerfis, RepositorioDePostagens, RedeSocial } from './cls';
+import { Perfil, Postagem, PostagemAvancada, RepositorioDePerfis, RepositorioDePostagens, RedeSocial, App } from './codigoProva';
 
 // Crie instâncias de RepositorioDePerfis e RepositorioDePostagens
 const repPerfis = new RepositorioDePerfis();
@@ -28,8 +28,8 @@ repPosts.incluir(postagemAvancada1);
 
 // Teste as operações da RedeSocial
 console.log('Teste incluirPerfil:');
-redeSocial.incluirPerfil(perfil1);
-redeSocial.incluirPerfil(perfil2);
+redeSocial.incluirPerfilRede(perfil1);
+redeSocial.incluirPerfilRede(perfil2);
 
 console.log('Teste consultarPerfil:');
 console.log(redeSocial.consultarPerfil(1, '', '')); // Deve retornar o perfil1
@@ -49,7 +49,7 @@ console.log(redeSocial.getPostagens().consultar(2, '')); // Deve retornar postag
 console.log('Teste incluirPerfil e incluirPostagem na RedeSocial:');
 const novoPerfil = new Perfil(3, 'Charlie', 'charlie@email.com');
 const novaPostagem2 = new Postagem(5, 'Nova postagem de Charlie', 5, 2, '2023-01-04', novoPerfil);
-redeSocial.incluirPerfil(novoPerfil);
+redeSocial.incluirPerfilRede(novoPerfil);
 redeSocial.incluirPostagem(novaPostagem2);
 console.log(redeSocial.getPostagens().postagens); // Deve incluir a nova postagem
 console.log(redeSocial.consultarPerfil(3, '', '')); // Deve retornar o novo perfil
@@ -58,3 +58,27 @@ console.log(redeSocial.consultarPerfil(3, '', '')); // Deve retornar o novo perf
 console.log('Teste consultarPostagens na RedeSocial:');
 console.log(redeSocial.getPostagens().consultar(1, '')); // Deve retornar postagem1, postagemAvancada1 e novaPostagem
 console.log(redeSocial.getPostagens().consultar(2, '')); // Deve retornar postagem2
+
+// Teste curtir e descurtir uma postagem
+console.log('Teste curtir e descurtir:');
+redeSocial.curtirPostagem(1);
+console.log(redeSocial.getPostagens().postagens[0].curtidas); // Deve ser 11 após curtir
+redeSocial.descurtirPostagem(1);
+console.log(redeSocial.getPostagens().postagens[0].descurtidas); // Deve ser 6 após descurtir
+
+// Teste decrementar visualizações
+console.log('Teste decrementar visualizações:');
+console.log(postagemAvancada1.visualizacoesRestantes); // Deve ser 100
+redeSocial.decrementarVisualizacoesPostagem(postagemAvancada1);
+console.log(postagemAvancada1.visualizacoesRestantes); // Deve ser 99
+
+// Teste exibir postagens por perfil
+console.log('Teste exibir postagens por perfil:');
+console.log(redeSocial.exibirPostagensPorPerfilPostagem(1)); // Deve retornar postagem1 e postagemAvancada1
+console.log(redeSocial.exibirPostagensPorPerfilPostagem(2)); // Deve retornar postagem2
+
+// Teste exibir postagens por hashtag
+console.log('Teste exibir postagens por hashtag:');
+console.log(redeSocial.exibirPostagensPorHashtagPostagem('#tag1')); // Deve retornar postagemAvancada1
+console.log(redeSocial.exibirPostagensPorHashtagPostagem('#tag3')); // Deve retornar um array vazio
+
